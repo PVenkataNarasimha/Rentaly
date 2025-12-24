@@ -1,0 +1,134 @@
+
+.adventure-section {
+  position: relative;
+  /* Make sure you have your image URL here */
+  background-image: url('https://www.madebydesignesia.com/themes/rentaly/images/background/3.jpg');
+  background-attachment: fixed; 
+  background-size: cover;
+  padding: 120px 0;
+  color: #ffffff;
+  font-family: 'Inter', sans-serif;
+}
+/* Dark Overlay */
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.364); /* Adjust opacity as needed */
+  z-index: 1;
+}
+
+/* Content Container to center and constrain width */
+.content-container {
+  position: relative;
+  z-index: 2;
+  max-width: 1200px;
+  width: 90%;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 60px;
+}
+
+/* Left Column */
+.left-column {
+  flex: 1;
+}
+
+.main-heading {
+  font-size: 3rem;
+  font-weight: 800;
+  line-height: 1.1;
+  margin: 0;
+  max-width: 300px;
+}
+
+/* Right Column */
+.right-column {
+  flex: 1.5;
+  display: flex;
+  gap: 40px;
+}
+
+/* Feature Item Styling */
+.feature-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.icon-box {
+  background-color: #32d830; /* Bright green from image */
+  width: 64px;
+  height: 64px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.text-box {
+  text-align: left;
+}
+
+.feature-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 0 12px 0;
+  color: #ffffff;
+}
+
+.feature-description {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #d1d5db;
+  margin: 0;
+}
+
+/* Tablet View */
+@media (max-width: 1024px) {
+  .content-container {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 60px;
+  }
+  
+  .main-heading {
+    font-size: 3rem;
+    max-width: 100%;
+  }
+  
+  .right-column {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+/* Mobile View */
+@media (max-width: 768px) {
+  .adventure-section {
+    padding: 80px 0;
+  }
+
+  .main-heading {
+    font-size: 2.5rem;
+    text-align: center;
+  }
+
+  .left-column, 
+  .feature-item, 
+  .text-box {
+    align-items: center;
+    text-align: center;
+  }
+
+  .right-column {
+    flex-direction: column;
+    gap: 50px;
+  }
+}

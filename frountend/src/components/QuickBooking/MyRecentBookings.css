@@ -1,0 +1,69 @@
+.recent-orders {
+  background: #fff;
+  padding: 25px;
+  margin-top: 40px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  max-width: 90%;
+  margin: 0 auto
+}
+
+.recent-orders h3 {
+  margin-bottom: 20px;
+  color: #0a1d56;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead th {
+  text-align: left;
+  font-size: 13px;
+  color: #9aa0b3;
+  font-weight: 500;
+  padding-bottom: 12px;
+}
+
+tbody tr {
+  border-top: 1px solid #eee;
+}
+
+tbody td {
+  padding: 14px 0;
+  font-size: 16px;
+  color: #24315e;
+}
+
+.order-id {
+  font-weight: 600;
+  color: #000;
+}
+
+.car-name {
+  font-weight: 600;
+}
+
+.status {
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.status.completed {
+  background: #1dd75b;
+  color: #fff;
+}
+
+.status.cancelled {
+  background: #ff3b3b;
+  color: #fff;
+}
+
+.status.scheduled {
+  background: #f4a100;
+  color: #fff;
+}

@@ -1,0 +1,32 @@
+/* --- Top Bar Styling --- */
+.top-bar {
+    background-color: #111; /* Dark background */
+    color: #ffffff;
+    padding: 8px 10%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    font-size: 13px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    height: 28px;
+}
+
+.icons-i {
+    color: #28bd34; /* Green icon color */
+    margin-right: 8px;
+    margin-left: 20px;
+}
+
+.top-bar i:first-child {
+    margin-left: 0;
+}
+
+.top-bar span {
+    margin-right: 15px;
+}
+
+.icons-iw{
+    color: #ffffff; /* White icon color */
+    margin-right: 8px;
+    margin-left: 20px;;
+}
