@@ -1,6 +1,11 @@
 const express = require('express');
-const router = express.Router();
-const { getVehicles } = require('../controllers/vehicle.controller');
+const Vehicle = require('../models/vehicle');
 
-router.get('/', getVehicles);
+const router = express.Router();
+
+router.get('/', async (req, res) => {
+  const vehicles = await Vehicle.find();
+  res.json(vehicles);
+});
+
 module.exports = router;

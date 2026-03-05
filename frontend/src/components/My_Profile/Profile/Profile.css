@@ -1,0 +1,99 @@
+.profile-page {
+  background: #f5f7f8;
+  min-height: 100vh;
+}
+
+.profile-hero {
+  height: 220px;
+  background: url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee')
+    center/cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.profile-container {
+  display: flex;
+  gap: 30px;
+  max-width: 1200px;
+  margin: -80px auto 40px;
+  padding: 0 20px;
+}
+
+.profile-sidebar {
+  width: 280px;
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.profile-card {
+  text-align: center;
+}
+
+.profile-img {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  border: 3px solid #3bd12b;
+}
+
+.sidebar-menu {
+  list-style: none;
+  padding: 0;
+  margin-top: 20px;
+}
+
+.sidebar-menu li,a {
+  padding: 12px;
+  cursor: pointer;
+}
+
+.sidebar-menu li.active,
+.sidebar-menu li:hover {
+  background: #3bd12b;
+  color: white;
+  border-radius: 6px;
+}
+
+.sidebar-menu .logout {
+  color: red;
+}
+
+.profile-content {
+  flex: 1;
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+label {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 6px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+}
+
+.update-btn {
+  margin-top: 25px;
+  background: #3bd12b;
+  color: white;
+  padding: 12px 22px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}

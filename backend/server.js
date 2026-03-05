@@ -1,41 +1,39 @@
-require('dotenv').config();
+require('dotenv').config(); // FIRST
+
 const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 
+
 const connectDB = require('./config/db');
-const authenticateToken = require('./middleware/auth.middleware');
+const authMiddleware = require('./middleware/auth.middleware');
 
 const authRoutes = require('./routes/auth.routes');
 const vehicleRoutes = require('./routes/vehicle.routes');
-const bookingRoutes = require('./routes/booking.routes');
 const profileRoutes = require('./routes/profile.routes');
+const bookingRoutes = require('./routes/booking.routes');
 
 const app = express();
-const port = 3001;
+const PORT = process.env.PORT || 3001;
 
-// 🔥 REQUIRED
 app.use(express.json());
 app.use(cookieParser());
 
 app.use(
   cors({
-    origin: 'http://localhost:5173', // Vite frontend
-    credentials: true,
+    origin: 'http://localhost:5173',
+    credentials: true
   })
 );
 
 // ROUTES
 app.use('/api/auth', authRoutes);
-app.use('/api/vehicles', vehicleRoutes); // ✅ PUBLIC
-app.use('/api/bookings', authenticateToken, bookingRoutes);
-app.use('/api/profile', authenticateToken, profileRoutes);
+app.use('/api/vehicles', vehicleRoutes); // PUBLIC
+app.use('/api/profile', authMiddleware, profileRoutes);
+app.use('/api/bookings', authMiddleware, bookingRoutes);
 
-const startServer = async () => {
-  await connectDB();
-  app.listen(port, () => {
-    console.log(`Server running on http://localhost:${port}`);
-  });
-};
-
-startServer();
+connectDB().then(() => {
+  app.listen(PORT, () =>
+    console.log(`Server running on http://localhost:${PORT}`)
+  );
+});
