@@ -9,23 +9,33 @@ const authenticateToken = require('./middleware/auth.middleware');
 const authRoutes = require('./routes/auth.routes');
 const vehicleRoutes = require('./routes/vehicle.routes');
 const bookingRoutes = require('./routes/booking.routes');
+const profileRoutes = require('./routes/profile.routes');
 
 const app = express();
 const port = 3001;
 
-connectDB();
-
-app.use(cors({
-  origin: 'http://localhost:5173',
-  credentials: true,
-}));
+// 🔥 REQUIRED
 app.use(express.json());
 app.use(cookieParser());
 
-app.use('/api/auth', authRoutes);
-app.use('/api/vehicles', authenticateToken, vehicleRoutes);
-app.use('/api/bookings', authenticateToken, bookingRoutes);
+app.use(
+  cors({
+    origin: 'http://localhost:5173', // Vite frontend
+    credentials: true,
+  })
+);
 
-app.listen(port, () => {
-  console.log(`🚀 Server running on http://localhost:${port}`);
-});
+// ROUTES
+app.use('/api/auth', authRoutes);
+app.use('/api/vehicles', vehicleRoutes); // ✅ PUBLIC
+app.use('/api/bookings', authenticateToken, bookingRoutes);
+app.use('/api/profile', authenticateToken, profileRoutes);
+
+const startServer = async () => {
+  await connectDB();
+  app.listen(port, () => {
+    console.log(`Server running on http://localhost:${port}`);
+  });
+};
+
+startServer();

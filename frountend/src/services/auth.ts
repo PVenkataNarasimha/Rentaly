@@ -1,11 +1,12 @@
 const API_URL = 'http://localhost:3001/api';
 
-export const login = async (username, password) => {
-    const response = await fetch(`${API_URL}/login`, {
+export const login = async (username: string, password: string) => {
+    const response = await fetch(`${API_URL}/auth/login`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
+        credentials: 'include',
         body: JSON.stringify({ username, password }),
     });
 
@@ -17,12 +18,13 @@ export const login = async (username, password) => {
     localStorage.setItem('token', token);
 };
 
-export const register = async (username, password) => {
-    const response = await fetch(`${API_URL}/register`, {
+export const register = async (username: string, password: string) => {
+    const response = await fetch(`${API_URL}/auth/register`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
+        credentials: 'include',
         body: JSON.stringify({ username, password }),
     });
 

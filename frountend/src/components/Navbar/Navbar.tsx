@@ -64,7 +64,7 @@ const Navbar: React.FC = () => {
                         <li className="dropdown">
                             <a href="#">My Account <span className="arrow"></span></a>
                             <ul className="dropdown-menu">
-                                <li><a href="#">Dashboard</a></li>
+                                <Link to="/dashbord"><li className='links'>Dashbord</li></Link>
                                 <li><a href="#">Profile</a></li>
                                 <li><a href="#">Bookings</a></li>
                                 <li><a href="#">Invoices</a></li>

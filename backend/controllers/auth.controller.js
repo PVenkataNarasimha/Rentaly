@@ -1,54 +1,61 @@
+const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { client } = require('../config/db');
 
 const register = async (req, res) => {
-  const { username, password } = req.body;
-  if (!username || !password)
-    return res.status(400).json({ message: 'Username and password required' });
+  try {
+    const { username, email, password } = req.body;
 
-  const users = client.db('rentaly').collection('users');
-  const exists = await users.findOne({ username });
-  if (exists) return res.status(400).json({ message: 'User exists' });
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: 'User already exists' });
+    }
 
-  const hashed = await bcrypt.hash(password, 10);
-  await users.insertOne({ username, password: hashed });
+    const hashedPassword = await bcrypt.hash(password, 12);
 
-  res.status(201).json({ message: 'Registered successfully' });
+    const user = new User({
+      username,
+      email,
+      password: hashedPassword,
+    });
+
+    await user.save();
+
+    res.status(201).json({ message: 'User registered successfully' });
+  } catch (error) {
+    console.error('Error registering user:', error);
+    res.status(500).json({ message: 'Server Error' });
+  }
 };
 
 const login = async (req, res) => {
-  const { username, password } = req.body;
+  try {
+    const { email, password } = req.body;
+    const user = await User.findOne({ email });
 
-  const users = client.db('rentaly').collection('users');
-  const user = await users.findOne({ username });
-  if (!user) return res.status(400).json({ message: 'Invalid credentials' });
+    if (!user || !(await bcrypt.compare(password, user.password))) {
+      return res.status(400).json({ message: 'Invalid credentials' });
+    }
 
-  const valid = await bcrypt.compare(password, user.password);
-  if (!valid) return res.status(400).json({ message: 'Invalid credentials' });
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-  const token = jwt.sign(
-    { userId: user._id.toString(), username: user.username },
-    process.env.JWT_SECRET,
-    { expiresIn: '3h' }
-  );
-
-  res.cookie('token', token, {
-    httpOnly: true,
-    sameSite: 'lax',
-    maxAge: 7 * 24 * 60 * 60 * 1000
-  });
-
-  res.json({ message: 'Login successful' });
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+    });
+    res.json({ message: 'Logged in successfully' });
+  } catch (error) {
+    console.error('Error logging in:', error);
+    res.status(500).json({ message: 'Server Error' });
+  }
 };
 
 const logout = (req, res) => {
-  res.clearCookie('token');
-  res.json({ message: 'Logged out' });
+  res.cookie('token', '', {
+    httpOnly: true,
+    expires: new Date(0),
+  });
+  res.status(200).json({ message: 'Logged out successfully' });
 };
 
-const verify = (req, res) => {
-  res.json({ authenticated: true, user: req.user });
-};
-
-module.exports = { register, login, logout, verify };
+module.exports = { register, login, logout };

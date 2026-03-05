@@ -18,17 +18,24 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import Booking from "./components/Header/Booking";
 import MyBookings from "./components/MyBookings/MyBookings";
+import Dashbord from "./components/My_Profile/Dashbord/Dashbord";
+import Profile from "./components/My_Profile/Profile/Profile";
 
 import { useAuth } from "./contexts/AuthContext";
 import "./App.css";
 
 /* -------------------- PRIVATE ROUTE -------------------- */
 const PrivateRoute = ({ children }: { children: React.ReactElement }) => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, loading } = useAuth();
+
+  if (loading) {
+    return <p className="container">Checking authentication...</p>;
+  }
+
   return isAuthenticated ? children : <Navigate to="/login" replace />;
 };
 
-/* -------------------- HOME -------------------- */
+/* -------------------- HOME PAGE -------------------- */
 const Home = ({ vehicles }: { vehicles: Car[] }) => (
   <>
     <Header />
@@ -46,27 +53,21 @@ const Home = ({ vehicles }: { vehicles: Car[] }) => (
 function App() {
   const { isAuthenticated } = useAuth();
   const [vehicles, setVehicles] = useState<Car[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState<boolean>(true);
+  
 
   useEffect(() => {
     const fetchVehicles = async () => {
-      if (!isAuthenticated) {
-        setLoading(false);
-        return;
-      }
-
       try {
         const res = await fetch("http://localhost:3001/api/vehicles", {
-          credentials: "include", // send httpOnly cookie
+          credentials: "include",
         });
 
-        if (!res.ok) {
-          throw new Error(`Server error: ${res.status}`);
-        }
+        if (!res.ok) throw new Error("Failed to fetch vehicles");
 
-        const rawData = await res.json();
+        const data = await res.json();
 
-        const mappedVehicles: Car[] = rawData.map(
+        const mappedVehicles: Car[] = data.map(
           (vehicle: any, index: number) => ({
             id: vehicle.id ?? index + 1,
             name: vehicle.name,
@@ -81,8 +82,8 @@ function App() {
         );
 
         setVehicles(mappedVehicles);
-      } catch (err) {
-        console.error("Vehicle fetch failed:", err);
+      } catch (error) {
+        console.error("Vehicle fetch failed:", error);
         setVehicles([]);
       } finally {
         setLoading(false);
@@ -90,7 +91,7 @@ function App() {
     };
 
     fetchVehicles();
-  }, [isAuthenticated]);
+  }, []);
 
   return (
     <>
@@ -98,22 +99,19 @@ function App() {
       <Navbar />
 
       <Routes>
+        {/* PUBLIC ROUTES */}
+        <Route path="/" element={
+          loading ? (
+            <p className="container">Loading vehicles...</p>
+          ) : (
+            <Home vehicles={vehicles} />
+          )
+        } />
+
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
 
-        <Route
-          path="/"
-          element={
-            <PrivateRoute>
-              {loading ? (
-                <p className="container">Loading vehicles...</p>
-              ) : (
-                <Home vehicles={vehicles} />
-              )}
-            </PrivateRoute>
-          }
-        />
-
+        {/* PROTECTED ROUTES */}
         <Route
           path="/booking"
           element={
@@ -131,11 +129,27 @@ function App() {
             </PrivateRoute>
           }
         />
+
         <Route
           path="/quickbooking"
           element={
-            <PrivateRoute> 
+            <PrivateRoute>
               <QuickBooking vehicles={vehicles} />
+            </PrivateRoute>
+          }
+        />
+        <Route
+         path="/dashbord"
+          element={
+            <PrivateRoute>
+              <Dashbord />
+            </PrivateRoute>
+          }
+        />
+        <Route path="/profile" 
+          element={
+            <PrivateRoute>
+              <Profile />
             </PrivateRoute>
           }
         />

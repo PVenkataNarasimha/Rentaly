@@ -28,7 +28,7 @@ const LoginPage: React.FC = () => {
     <div className="auth-page">
       <div className="auth-form-container">
         <h2>Welcome Back</h2>
-
+        <Link to="/"></Link>
         {error && <p className="error-message">{error}</p>}
 
         <form onSubmit={handleSubmit}>
